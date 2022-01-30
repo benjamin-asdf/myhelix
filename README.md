@@ -2,7 +2,7 @@
 
 try to use
 https://github.com/phonglk/ink-fuzzy-select
-with helxi
+with helix
 
 It doesn't work.
 Invalid hook call.
