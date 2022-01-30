@@ -41,4 +41,8 @@
   main
   [& cli-args]
   (prn "hello world")
-  (ink/render ($ main)))
+  ;; werks
+  (ink/render ($ app))
+  ;; throws
+  (ink/render ($ fuzzy-query))
+  )
