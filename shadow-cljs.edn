@@ -1,0 +1,6 @@
+{:deps {:aliases [:dev]}
+ :nrepl {:port 8802}
+ :jvm-opts ["-Xmx1G"]
+ :builds {:script {:target :node-script
+                   :main demo.script/main
+                   :output-to "out/demo-script/script.js"}}}
