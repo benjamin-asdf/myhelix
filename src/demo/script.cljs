@@ -1,36 +1,44 @@
+(ns
+    demo.script
+    (:require
+     ["ink" :as ink]
+     ["ink-fuzzy-select" :default FuzzySelect]
+     [helix.core :refer [defnc $]]
+     [helix.hooks :as hooks]
+     [helix.dom :as d]))
+
 (comment
   (ns demo.script)
   (defn main [& cli-args]
     (prn "hello world")))
 
-(ns
-    demo.script
-    (:require
-     [helix.core :refer [defnc $]]
-     [helix.hooks :as hooks]
-     [helix.dom :as d]
-     ["react-dom" :as rdom]))
+(def items (clj->js
+            [{:label "First"
+              :value "first"}
+             {:label "Second"
+              :value "second"}]))
 
-;; define components using the `defnc` macro
-(defnc greeting
-  "A component which greets a user."
-  [{:keys [name]}]
-  ;; use helix.dom to create DOM elements
-  (d/div "Hello, " (d/strong name) "!"))
 
 (defnc app []
   (let [[state set-state] (hooks/use-state {:name "Helix User"})]
-    (d/div
-     (d/h1 "Welcome!")
-      ;; create elements out of components
-      ($ greeting {:name (:name state)})
-      (d/input {:value (:name state)
-                :on-change #(set-state assoc :name (.. % -target -value))}))))
+    ($
+     ink/Box
+     ($ ink/Text "Welcome! " (:name state)))))
+
+(defnc
+  fuzzy-query
+  []
+  (let [[select set-select] (hooks/use-state "")]
+    ($
+     ink/Box
+     {:flex-direction "column"}
+     ($ FuzzySelect {:options items :on-select set-select})
+     ($ ink/Text select))))
 
 ;; start your app with your favorite React renderer
-(defn init [] (rdom/render ($ app) (js/document.getElementById "app")))
 
-
-(defn main [& cli-args]
+(defn
+  main
+  [& cli-args]
   (prn "hello world")
-  (init))
+  (ink/render ($ main)))
